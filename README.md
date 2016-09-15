@@ -7,7 +7,7 @@ En un [curso de nuevas tecnologías](https://github.com/javacasm/EscuelaArte) pa
 
 ## ¿Arduino Wifi?
 
-La placa [Arduino UNO Wifi](http://www.arduino.org/products/boards/arduino-uno-wifi) no es otra cosa que una placa Arduino UNO con un [ESP8266](http://www.esp8266.com/) integrado que le proporciona la conectividad Wifi
+La placa [Arduino UNO Wifi](http://www.arduino.org/products/boards/arduino-uno-wifi) no es otra cosa que una placa Arduino UNO con un [ESP8266](http://www.esp8266.com/) integrado que le proporciona la conectividad Wifi y que están conectados entre si por medio I2C con lo que tenemos disponible todos  los pines.
 
 ![1](./images/ArduinoWifi_back.jpg)
 ![1](./images/ArduinoWifi_front.jpg)     
@@ -40,6 +40,146 @@ Como hemos dicho la placa incluye un ESP8266 que nos permite tanto crear una red
 ## Uso
 
 Descargamos el [IDE de arduino.org](http://www.arduino.org/downloads) (la numeración es engañosa y no quiere decir que sea más avanzado que la versión 1.6.9 de arduino.cc)
+
+A partir de aquí podemos programar la placa de la forma standard.
+
+## Código
+
+Como siempre tenemos disponibles ejemplos
+
+### Webserver
+
+
+  #include <Wire.h>
+  #include <ArduinoWiFi.h>
+  /*
+  on your borwser, you type http://<IP>/arduino/webserver/ or http://<hostname>.local/arduino/webserver/
+
+  http://labs.arduino.org/WebServer
+
+  */
+  void setup() {
+      Wifi.begin();
+      Wifi.println("WebServer Server is up");
+  }
+  void loop() {
+
+      while(Wifi.available()){
+        process(Wifi);
+      }
+    delay(50);
+  }
+  void process(WifiData client) {
+    // read the command
+    String command = client.readStringUntil('/');
+
+    if (command == "webserver") {
+      WebServer(client);
+    }
+  }
+  void WebServer(WifiData client) {
+            client.println("HTTP/1.1 200 OK");
+            client.println("Content-Type: text/html");
+            client.println("Connection: close");  
+            client.println("Refresh: 20");  // refresh the page automatically every  sec
+            client.println();      
+            client.println("<html>");
+            client.println("<head> <title>UNO WIFI Example</title> </head>");
+            client.print("<body>");
+
+            for (int analogChannel = 0; analogChannel < 4; analogChannel++) {
+              int sensorReading = analogRead(analogChannel);
+              client.print("analog input ");
+              client.print(analogChannel);
+              client.print(" is ");
+              client.print(sensorReading);
+              client.print("<br/>");
+            }
+
+            client.print("</body>");
+            client.println("</html>");
+            client.print(DELIMITER); // very important to end the communication !!!          
+  }
+
+### Webserver con capacidad de controlar pines
+
+    #include <Wire.h>
+    #include <ArduinoWiFi.h>
+    /*
+    on your borwser, you type http://<IP>/arduino/webserver/ or http://<hostname>.local/arduino/webserver/
+
+    http://labs.arduino.org/WebServerBlink
+
+    */
+    void setup() {
+        pinMode(13,OUTPUT);
+        Wifi.begin();
+        Wifi.println("WebServer Server is up");
+    }
+    void loop() {
+
+        while(Wifi.available()){
+          process(Wifi);
+        }
+      delay(50);
+    }
+
+    void process(WifiData client) {
+      // read the command
+      String command = client.readStringUntil('/');
+
+      // is "digital" command?
+      if (command == "webserver") {
+        WebServer(client);
+      }
+
+      if (command == "digital") {
+        digitalCommand(client);
+      }
+    }
+
+    void WebServer(WifiData client) {
+
+              client.println("HTTP/1.1 200 OK");
+              client.println("Content-Type: text/html");
+              client.println();
+              client.println("<html>");
+
+              client.println("<head> </head>");
+              client.print("<body>");
+
+              client.print("Click<input type=button onClick=\"var w=window.open('/arduino/digital/13/1','_parent');w.close();\"value='ON'>pin13 ON<br>");
+              client.print("Click<input type=button onClick=\"var w=window.open('/arduino/digital/13/0','_parent');w.close();\"value='OFF'>pin13 OFF<br>");
+
+              client.print("</body>");
+              client.println("</html>");
+              client.print(DELIMITER); // very important to end the communication !!!
+
+    }
+
+    void digitalCommand(WifiData client) {
+      int pin, value;
+
+      // Read pin number
+      pin = client.parseInt();
+
+      // If the next character is a '/' it means we have an URL
+      // with a value like: "/digital/13/1"
+      if (client.read() == '/') {
+        value = client.parseInt();
+        digitalWrite(pin, value);
+      }
+
+      // Send feedback to client
+      client.print(F("Pin D"));
+      client.print(pin);
+      client.print(F(" set to "));
+      client.print(value);
+      client.print(EOL);
+
+    }
+
+
 
 ## Opinión
 
