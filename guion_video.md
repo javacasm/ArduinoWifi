@@ -17,6 +17,9 @@
 ## Software
 
 * Debemos usar el IDE de Arduino.org (personalmente no me gusta tener que usar 2 IDEs)
+(ver de donde se descarga)
+
+* Este IDE incluye ejemplos sencillos
 
 * Para usar las comunicaciones sólo tendremos que incluir la librería "ArduinoWifi" y utilizar el objeto Wifi. Veamos cómo:
 
