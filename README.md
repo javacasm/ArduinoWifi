@@ -49,59 +49,62 @@ Como siempre tenemos disponibles ejemplos
 
 ### Webserver
 
+Se trata de poder ver el valor de las entradas analógica desde un navegador web conectándolos a la ip del Arduino UNO Wifi
 
-  #include <Wire.h>
-  #include <ArduinoWiFi.h>
-  /*
-  on your borwser, you type http://<IP>/arduino/webserver/ or http://<hostname>.local/arduino/webserver/
+    #include <Wire.h>
+    #include <ArduinoWiFi.h>
 
-  http://labs.arduino.org/WebServer
+    /* Nos conectamos a la IP de la placa arduino (192.168.240.1 por defecto) http://<IP>/arduino/webserver/ or http://<hostname>.local/arduino/webserver/
 
-  */
-  void setup() {
-      Wifi.begin();
-      Wifi.println("WebServer Server is up");
-  }
-  void loop() {
+    http://labs.arduino.org/WebServer
 
-      while(Wifi.available()){
-        process(Wifi);
-      }
-    delay(50);
-  }
-  void process(WifiData client) {
-    // read the command
-    String command = client.readStringUntil('/');
-
-    if (command == "webserver") {
-      WebServer(client);
+    */
+    void setup() {
+        Wifi.begin();
+        Wifi.println("WebServer Server arrancado");
     }
-  }
-  void WebServer(WifiData client) {
-            client.println("HTTP/1.1 200 OK");
-            client.println("Content-Type: text/html");
-            client.println("Connection: close");  
-            client.println("Refresh: 20");  // refresh the page automatically every  sec
-            client.println();      
-            client.println("<html>");
-            client.println("<head> <title>UNO WIFI Example</title> </head>");
-            client.print("<body>");
+    void loop() {
 
-            for (int analogChannel = 0; analogChannel < 4; analogChannel++) {
-              int sensorReading = analogRead(analogChannel);
-              client.print("analog input ");
-              client.print(analogChannel);
-              client.print(" is ");
-              client.print(sensorReading);
-              client.print("<br/>");
-            }
+        while(Wifi.available()){
+          process(Wifi);
+        }
+      delay(50);
+    }
+    void process(WifiData client) {
+      // Leemos el comando (petición)
+      String command = client.readStringUntil('/');
 
-            client.print("</body>");
-            client.println("</html>");
-            client.print(DELIMITER); // very important to end the communication !!!          
-  }
+      if (command == "webserver") {
+        WebServer(client);
+      }
+    }
+    void WebServer(WifiData client) {
+              client.println("HTTP/1.1 200 OK");
+              client.println("Content-Type: text/html");
+              client.println("Connection: close");  
+              client.println("Refresh: 20");  // refresh the page automatically every  sec
+              client.println();      
+              client.println("<html>");
+              client.println("<head> <title>UNO WIFI Example</title> </head>");
+              client.print("<body>");
+
+              for (int analogChannel = 0; analogChannel < 4; analogChannel++) {
+                int sensorReading = analogRead(analogChannel);
+                client.print("analog input ");
+                client.print(analogChannel);
+                client.print(" is ");
+                client.print(sensorReading);
+                client.print("<br/>");
+              }
+
+              client.print("</body>");
+              client.println("</html>");
+              client.print(DELIMITER); // very important to end the communication !!!          
+    }
 
 ### Webserver con capacidad de controlar pines
+
+
 
     #include <Wire.h>
     #include <ArduinoWiFi.h>
