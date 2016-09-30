@@ -12,6 +12,8 @@ La placa [Arduino UNO Wifi](http://www.arduino.org/products/boards/arduino-uno-w
 ![1](./images/ArduinoWifi_back.jpg)
 ![1](./images/ArduinoWifi_front.jpg)     
 
+[Vídeo review]()
+
 ## ¿Wifi?
 
 Como hemos dicho la placa incluye un ESP8266 que nos permite tanto crear una red Wifi como conectarnos a una dada. [¿Cómo configurar el wifi?](http://www.arduino.org/learning/getting-started/getting-started-with-arduino-uno-wifi)
@@ -30,6 +32,7 @@ Como hemos dicho la placa incluye un ESP8266 que nos permite tanto crear una red
     Pines analógicos: 6
     EEPROM: 1Kb
 
+
 ## Contenido de la caja
 
 ![1](./images/CajaArduinoWifi.jpg)
@@ -38,6 +41,8 @@ Como hemos dicho la placa incluye un ESP8266 que nos permite tanto crear una red
 ![1](./images/Contenido.jpg)
 
 ## Uso
+
+[Vídeo de como usarlo](https://youtu.be/Mp81ekoXV4Y)
 
 Descargamos el [IDE de arduino.org](http://www.arduino.org/downloads) (la numeración es engañosa y no quiere decir que sea más avanzado que la versión 1.6.9 de arduino.cc)
 
