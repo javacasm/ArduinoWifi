@@ -42,11 +42,13 @@ Como hemos dicho la placa incluye un ESP8266 que nos permite tanto crear una red
 
 ## Uso
 
-[Vídeo de como usarlo](https://youtu.be/Mp81ekoXV4Y)
+
 
 Descargamos el [IDE de arduino.org](http://www.arduino.org/downloads) (la numeración es engañosa y no quiere decir que sea más avanzado que la versión 1.6.9 de arduino.cc)
 
 A partir de aquí podemos programar la placa de la forma standard.
+
+[Vídeo de como usarlo](https://youtu.be/Mp81ekoXV4Y)
 
 ## Código
 
@@ -54,7 +56,7 @@ Como siempre tenemos disponibles ejemplos
 
 ### Webserver
 
-Se trata de poder ver el valor de las entradas analógica desde un navegador web conectándolos a la ip del Arduino UNO Wifi
+Se trata de poder ver el valor de las entradas analógica desde un navegador web conectándolos a la ip del Arduino UNO Wifi.
 
     #include <Wire.h>
     #include <ArduinoWiFi.h>
@@ -109,7 +111,7 @@ Se trata de poder ver el valor de las entradas analógica desde un navegador web
 
 ### Webserver con capacidad de controlar pines
 
-
+En este ejemplo podemos encender/apagar el pin 13 del arduino Wifi remotamente
 
     #include <Wire.h>
     #include <ArduinoWiFi.h>
